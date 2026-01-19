@@ -18,15 +18,17 @@ public class PlayerCamera : MonoBehaviour
     float movementHorizontal;
     float movementVertical;
 
+    void Awake()
+    {
+        camera = GetComponentInChildren<Camera>();
+        rigidBody = GetComponent<Rigidbody>();
+        rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
+    }
+
     public void Init()
     {
         doDisableInput = false;
         isJumping = false;
-
-        camera = GetComponentInChildren<Camera>();
-
-        rigidBody = GetComponent<Rigidbody>();
-        rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
     }
 
     public void ConfigureGravityUse(bool doEnable)
