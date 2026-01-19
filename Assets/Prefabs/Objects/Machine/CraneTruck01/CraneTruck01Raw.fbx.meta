@@ -1,0 +1,337 @@
+fileFormatVersion: 2
+guid: 5267786430bbe4d72ab019208f6aa64b
+ModelImporter:
+  serializedVersion: 22200
+  internalIDToNameTable: []
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_CNT_Base
+    second: {fileID: 2100000, guid: e66a2947f7e81468d8aa2c6c9aef3cc2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_CNT_Body
+    second: {fileID: 2100000, guid: a29ba956a4376443d8d01a081b102be7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_CNT_Boom
+    second: {fileID: 2100000, guid: 7138e682bafb74f6280926a965db9acf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_CNT_Cables
+    second: {fileID: 2100000, guid: 7a8c827afa2514850932955b84554384, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_CNT_Counterweight
+    second: {fileID: 2100000, guid: 3e5adfeabaaae402ea754b88684f3348, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_CNT_Cylinder_Weights
+    second: {fileID: 2100000, guid: 188f22717114c4bacb4d753b72ee3237, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_CNT_Driver
+    second: {fileID: 2100000, guid: 554f405ab025f41b495b44e101c9ac22, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_CNT_DriverInterior_Hooks
+    second: {fileID: 2100000, guid: aaaebee7f025147258cfc0997484f647, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_CNT_Operator
+    second: {fileID: 2100000, guid: 96c2feb0546bb46039770681e3371079, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_CNT_Operator_Interior
+    second: {fileID: 2100000, guid: 9d7a411e4ea654e7d8d550092530f37a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_CNT_Wheels
+    second: {fileID: 2100000, guid: 9951f30a065194681ac97d63b1fd2341, type: 2}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: mat0_c
+    second: {fileID: 2800000, guid: 10c2a2c5c9e004b36826ca17d3188dda, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: mat0_n
+    second: {fileID: 2800000, guid: 3faf1c4818b044121815bdd99ebffd3c, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: mat0_r
+    second: {fileID: 2800000, guid: 3cbfe1a1e113e4f309678a446adc9627, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: mat10_c
+    second: {fileID: 2800000, guid: 6c9ffa86888ec46f89a46e83bec30b2e, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: mat10_n
+    second: {fileID: 2800000, guid: efcae4056952843a6bfae9782b83426e, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: mat10_r
+    second: {fileID: 2800000, guid: e6646dc90d9f84007bbd4244eae66f1b, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: mat1_c
+    second: {fileID: 2800000, guid: e3bd4227a8faf42b9956322019dafa24, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: mat1_n
+    second: {fileID: 2800000, guid: 1a7867644e7944515bdb634391962b96, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: mat1_r
+    second: {fileID: 2800000, guid: f1d25b60ff4a440959d92532ec2b0164, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: mat2_c
+    second: {fileID: 2800000, guid: e9b55bd49eff948c7bfa556a4b12793f, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: mat2_n
+    second: {fileID: 2800000, guid: 07aeca2b92aab4a64886e5731c309141, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: mat2_r
+    second: {fileID: 2800000, guid: ebacb0c7a4c9c4368a23f52ced3c2a04, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: mat3_c
+    second: {fileID: 2800000, guid: 7dc5253be855e40d7865649ad9398f37, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: mat3_g
+    second: {fileID: 2800000, guid: 2beb96d3e1ef24a8cb0a0b712ecee377, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: mat3_n
+    second: {fileID: 2800000, guid: 2b292b39b937b49988f13b02b86f0b5b, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: mat4_c
+    second: {fileID: 2800000, guid: f6fdddc2a627b41d9bdf2524c21af930, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: mat4_n
+    second: {fileID: 2800000, guid: c2b3c4533f02d46459dd5f7090ea2bdf, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: mat4_r
+    second: {fileID: 2800000, guid: 1b61d6281d032434fba4f32464a8f08d, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: mat5_c
+    second: {fileID: 2800000, guid: 553c0278d9daa4150871ce30565e159b, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: mat5_n
+    second: {fileID: 2800000, guid: 984d2f0b85af642d6851cc931d3f5bb1, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: mat5_r
+    second: {fileID: 2800000, guid: 315a777fcb6fb4dc18443851454a9228, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: mat6_a
+    second: {fileID: 2800000, guid: 44e1188ce2051410eb593dc765a1e9ce, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: mat6_c
+    second: {fileID: 2800000, guid: 15ed74d11aada4865b00b6877ec0b211, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: mat6_n
+    second: {fileID: 2800000, guid: 15b5e884ecb2444cda4102adefb4cf4b, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: mat6_r
+    second: {fileID: 2800000, guid: 1f076fd9b1e384aa085627ffe1b4051c, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: mat7_c
+    second: {fileID: 2800000, guid: ea45099a3c4154e2c9d2e93d2a2d99e6, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: mat7_n
+    second: {fileID: 2800000, guid: a66daf1267475412d979b05bd31d1d90, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: mat7_r
+    second: {fileID: 2800000, guid: 6ed421e4afc13405d9bc25976cb39f36, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: mat8_a
+    second: {fileID: 2800000, guid: dc2a9e4b880834e558c5667879995095, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: mat8_c
+    second: {fileID: 2800000, guid: 24ce551e217b14a909993beeea883a13, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: mat8_n
+    second: {fileID: 2800000, guid: 51322dbf0900c49dc8a7ad1b4210bed7, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: mat8_r
+    second: {fileID: 2800000, guid: e0c56eabd42524f3296c752ede839158, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: mat9_c
+    second: {fileID: 2800000, guid: 6068d59a0cd51434b845ab0501a1b817, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: mat9_n
+    second: {fileID: 2800000, guid: 06efdeffa88b9415687558b81b5194e4, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: mat9_r
+    second: {fileID: 2800000, guid: cfb55a18501b2481f988186c1f76eff2, type: 3}
+  materials:
+    materialImportMode: 2
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    nodeNameCollisionStrategy: 1
+    fileIdsGeneration: 2
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    strictVertexDataChecks: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 2
+  humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  importBlendShapeDeformPercent: 1
+  remapMaterialsIfMaterialImportModeIsNone: 0
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

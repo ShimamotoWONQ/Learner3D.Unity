@@ -1,0 +1,135 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1c0314af000a4bc2ac43f9bcfbffb9e, type: 3}
+  m_Name: NoteDetailData
+  m_EditorClassIdentifier: 
+  list:
+  - stepIndex: 1
+    title: "\u30D0\u30C3\u30AF\u30DB\u30A6"
+    doShowAlways: 0
+    stepIndexs: 00000000010000000200000003000000
+    postion: {x: 1, y: 9, z: 12}
+    noteColor: 0
+  - stepIndex: 1
+    title: "\u30D7\u30EC\u30AD\u30E3\u30B9\u30C8\u30DC\u30C3\u30AF\u30B9\u30AB\u30EB\u30D0\u30FC\u30C8"
+    doShowAlways: 0
+    stepIndexs: 0000000001000000020000000300000004000000050000000600000007000000
+    postion: {x: -10, y: 10, z: 5}
+    noteColor: 0
+  - stepIndex: 1
+    title: "\u30D0\u30EA\u30B1\u30FC\u30C9"
+    doShowAlways: 1
+    stepIndexs: 
+    postion: {x: -4, y: 9.5, z: -1}
+    noteColor: 0
+  - stepIndex: 1
+    title: "(1) \u5E8A\u6398\u308A"
+    doShowAlways: 0
+    stepIndexs: 01000000
+    postion: {x: 0, y: 9, z: 5}
+    noteColor: 1
+  - stepIndex: 1
+    title: "(2) \u57FA\u9762\u6574\u6B63"
+    doShowAlways: 0
+    stepIndexs: 01000000
+    postion: {x: 0, y: 9, z: 0}
+    noteColor: 1
+  - stepIndex: 3
+    title: "(1) \u30D0\u30C3\u30AF\u30DB\u30A6\u306B\u3088\u308B\u7815\u77F3\u6295\u5165"
+    doShowAlways: 0
+    stepIndexs: 03000000
+    postion: {x: 0, y: 9, z: 5}
+    noteColor: 1
+  - stepIndex: 3
+    title: "\u7815\u77F3"
+    doShowAlways: 0
+    stepIndexs: 03000000
+    postion: {x: 0, y: 7.5, z: 5}
+    noteColor: 0
+  - stepIndex: 3
+    title: "\u632F\u52D5\u30B3\u30F3\u30D1\u30AF\u30BF"
+    doShowAlways: 0
+    stepIndexs: 03000000
+    postion: {x: 0, y: 7.5, z: -3}
+    noteColor: 0
+  - stepIndex: 3
+    title: "(2) \u4EBA\u529B\u306B\u3088\u308B\u6577\u5747\u3057"
+    doShowAlways: 0
+    stepIndexs: 03000000
+    postion: {x: 0, y: 9, z: 0}
+    noteColor: 1
+  - stepIndex: 3
+    title: "(3) \u7DE0\u56FA\u3081"
+    doShowAlways: 0
+    stepIndexs: 03000000
+    postion: {x: 0, y: 9, z: -3}
+    noteColor: 1
+  - stepIndex: 5
+    title: "\u57FA\u790E\u30B3\u30F3\u30AF\u30EA\u30FC\u30C8\u578B\u67A0"
+    doShowAlways: 0
+    stepIndexs: 05000000
+    postion: {x: 0, y: 7.5, z: 7}
+    noteColor: 0
+  - stepIndex: 5
+    title: "\u751F\u30B3\u30F3\u30AF\u30EA\u30FC\u30C8"
+    doShowAlways: 0
+    stepIndexs: 05000000
+    postion: {x: 0, y: 7.5, z: 0}
+    noteColor: 0
+  - stepIndex: 4
+    title: "\u30B3\u30F3\u30AF\u30EA\u30FC\u30C8\u30DD\u30F3\u30D7\u8ECA"
+    doShowAlways: 0
+    stepIndexs: 0400000005000000
+    postion: {x: 11, y: 9, z: 1}
+    noteColor: 0
+  - stepIndex: 4
+    title: "\u30A2\u30B8\u30C6\u30FC\u30BF\u30C8\u30E9\u30C3\u30AF"
+    doShowAlways: 0
+    stepIndexs: 0400000005000000
+    postion: {x: 10, y: 9, z: 15}
+    noteColor: 0
+  - stepIndex: 5
+    title: "(1) \u57FA\u790E\u30B3\u30F3\u30AF\u30EA\u30FC\u30C8\u578B\u67A0"
+    doShowAlways: 0
+    stepIndexs: 05000000
+    postion: {x: 0, y: 9, z: 7}
+    noteColor: 1
+  - stepIndex: 5
+    title: "(2) \u57FA\u790E\u30B3\u30F3\u30AF\u30EA\u30FC\u30C8\u6253\u8A2D"
+    doShowAlways: 0
+    stepIndexs: 05000000
+    postion: {x: 0, y: 9, z: 0}
+    noteColor: 1
+  - stepIndex: 12
+    title: "(1) \u30D0\u30C3\u30AF\u30DB\u30A6\u306B\u3088\u308B\u57CB\u623B\u6750\u6295\u5165"
+    doShowAlways: 0
+    stepIndexs: 0c000000
+    postion: {x: 0, y: 9, z: 5}
+    noteColor: 1
+  - stepIndex: 12
+    title: "(2) \u7DE0\u56FA\u3081"
+    doShowAlways: 0
+    stepIndexs: 0c000000
+    postion: {x: 0, y: 9, z: 1}
+    noteColor: 1
+  - stepIndex: 12
+    title: "\u632F\u52D5\u30BF\u30F3\u30D1"
+    doShowAlways: 0
+    stepIndexs: 0c000000
+    postion: {x: 2, y: 8.5, z: 2}
+    noteColor: 0
+  - stepIndex: 8
+    title: "\u30AF\u30EC\u30FC\u30F3\u30C8\u30E9\u30C3\u30AF"
+    doShowAlways: 0
+    stepIndexs: 08000000
+    postion: {x: -5.5, y: 9, z: -5}
+    noteColor: 0
