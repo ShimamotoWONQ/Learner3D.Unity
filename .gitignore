@@ -1,0 +1,14 @@
+.vscode
+
+Library
+Logs
+Temp
+UserSettings
+
+*.csproj
+*.sln
+*.slnx
+*.user
+*.suo
+*.tmp
+.DS_Store
