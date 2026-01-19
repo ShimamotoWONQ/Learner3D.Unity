@@ -5,8 +5,15 @@ using TMPro;
 [RequireComponent( typeof(Canvas), typeof(CanvasRotator) )]
 public class NoteCanvas : MonoBehaviour
 {
+    [Header("UI References")]
     [SerializeField] TMP_Text noteTitle;
     [SerializeField] Image noteContainer;
+
+    [Header("Color Settings")]
+    [SerializeField] Color yellowContainerColor = new Color(0.85f, 0.75f, 0.18f, 0.8f);
+    [SerializeField] Color yellowTextColor = Color.black;
+    [SerializeField] Color blackContainerColor = new Color(0.2f, 0.2f, 0.2f, 0.8f);
+    [SerializeField] Color blackTextColor = Color.white;
 
     public int stepIndex;
     CanvasRotator canvasRotator;
@@ -24,20 +31,17 @@ public class NoteCanvas : MonoBehaviour
         switch (noteColor)
         {
             case NoteColor.Yellow:
-                noteContainer.color = new Color(r: 0.85f, g: 0.75f, b: 0.18f, a: 0.8f);
-                noteTitle.color = Color.black;
-
+                noteContainer.color = yellowContainerColor;
+                noteTitle.color = yellowTextColor;
                 break;
 
             case NoteColor.Black:
-                noteContainer.color = new Color(r: 0.2f, g: 0.2f, b: 0.2f, a: 0.8f);
-                noteTitle.color = Color.white;
-
+                noteContainer.color = blackContainerColor;
+                noteTitle.color = blackTextColor;
                 break;
 
             default:
                 break;
-
         }
     }
 }

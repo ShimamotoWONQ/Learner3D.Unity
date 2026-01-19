@@ -1,47 +1,63 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(MeshFilter))]
-[RequireComponent(typeof(MeshRenderer))]
+[RequireComponent( typeof(MeshFilter) )]
+[RequireComponent( typeof(MeshRenderer) )]
 public class PrecastCulvert : MonoBehaviour
 {
+    private const float MillimeterToMeter = 0.001f;
 
     public float width = 1780f;
-
     public float height = 1320f;
-
     public float depth = 1000f;
-
     public float widthOffset = 140f;
-
     public float heightOffset = 160f;
-
     public float ductOffset = 150f;
-
     public bool saveMeshOnCreation = false;
 
-    List<Vector3> anchors = new List<Vector3>();
+    private readonly List<Vector3> anchors = new();
+    private readonly List<Vector3> clonedAnchors = new();
+    private readonly List<GameObject> segments = new();
 
-    List<Vector3> clonedAnchors = new List<Vector3>();
+    private MeshFilter _meshFilter;
 
-    List<GameObject> segments = new List<GameObject>();
+    void Awake()
+    {
+        _meshFilter = GetComponent<MeshFilter>();
+    }
 
     void Start()
     {
         CreateObject();
     }
 
-    public void CreateObject () {
+    public void CreateObject()
+    {
+        #region Clear previous data
 
-        #region Calclate anchors for a side
+        anchors.Clear();
+        clonedAnchors.Clear();
 
-        float w = width * 0.001f;
-        float h = height * 0.001f;
-        float d  = depth * 0.001f;
+        foreach (var segment in segments)
+        {
+            if (segment != null)
+            {
+                Destroy(segment);
+            }
+        }
+        segments.Clear();
 
-        float wo = widthOffset * 0.001f;
-        float ho = heightOffset * 0.001f;
-        float ducto = ductOffset * 0.001f;
+        #endregion
+
+        #region Calculate anchors for a side
+
+        float w = width * MillimeterToMeter;
+        float h = height * MillimeterToMeter;
+        float d = depth * MillimeterToMeter;
+
+        float wo = widthOffset * MillimeterToMeter;
+        float ho = heightOffset * MillimeterToMeter;
+        float ducto = ductOffset * MillimeterToMeter;
 
         int[,] signList = new int[4, 2] {
             { -1,  1 },
@@ -55,7 +71,7 @@ public class PrecastCulvert : MonoBehaviour
             Vector3 masterAnchor = new Vector3(
                 signList[i, 0] * w / 2,
                 signList[i, 1] * h / 2,
-                - d / 2
+                -d / 2
             );
 
             Vector3 firstAnchor = new Vector3(
@@ -80,7 +96,6 @@ public class PrecastCulvert : MonoBehaviour
             anchors.Add(firstAnchor);
             anchors.Add(secondAnchor);
             anchors.Add(thirdAnchor);
-
         }
 
         #endregion
@@ -89,18 +104,24 @@ public class PrecastCulvert : MonoBehaviour
 
         for (int i = 0; i < 2; i++)
         {
-            CreateQuadMesh(
-                anchors[(i * 4) + 1],
-                anchors[(i * 4)],
-                anchors[(i * 4) + (i + 1) * 4 + 1],
-                anchors[(i * 4) + (i + 1) * 4]
-            );
+            int baseIndex = i * 4;
+            int nextGroupIndex = (i + 1) * 4;
 
             CreateQuadMesh(
-                anchors[(i * 8)],
-                anchors[(i * 8) + 1],
-                anchors[(i * 4) + 8],
-                anchors[(i * 4) + 8 + 1]
+                anchors[baseIndex + 1],
+                anchors[baseIndex],
+                anchors[baseIndex + nextGroupIndex + 1],
+                anchors[baseIndex + nextGroupIndex]
+            );
+
+            int baseIndex8 = i * 8;
+            int offsetIndex = baseIndex + 8;
+
+            CreateQuadMesh(
+                anchors[baseIndex8],
+                anchors[baseIndex8 + 1],
+                anchors[offsetIndex],
+                anchors[offsetIndex + 1]
             );
         }
 
@@ -110,16 +131,19 @@ public class PrecastCulvert : MonoBehaviour
 
         for (int i = 0; i < 2; i++)
         {
+            int triangleBaseIndex = i * 12;
+            int midGroupIndex = (i + 1) * 4;
+
             CreateTriangleMesh(
-                anchors[(i * 12) + 1],
-                anchors[(i * 12) + 2],
-                anchors[(i * 12) + 3]
+                anchors[triangleBaseIndex + 1],
+                anchors[triangleBaseIndex + 2],
+                anchors[triangleBaseIndex + 3]
             );
 
             CreateTriangleMesh(
-                anchors[(i + 1) * 4 + 1],
-                anchors[(i + 1) * 4 + 3],
-                anchors[(i + 1) * 4 + 2]
+                anchors[midGroupIndex + 1],
+                anchors[midGroupIndex + 3],
+                anchors[midGroupIndex + 2]
             );
         }
 
@@ -136,23 +160,25 @@ public class PrecastCulvert : MonoBehaviour
         foreach (GameObject segment in segments)
         {
             GameObject go = Instantiate(segment);
-            go.transform.parent = gameObject.transform;
-            go.transform.localPosition = - transform.position;
-            go.transform.localRotation = Quaternion.Euler(0, 180f, 0);
+            go.transform.SetParent(transform, false);
+            go.transform.SetLocalPositionAndRotation(
+                -transform.position,
+                Quaternion.Euler(0, 180f, 0)
+            );
         }
 
         #endregion
 
         #region Create quad meshes binds both side
 
-        int[,] outerAnchors = new int [4,2] {
+        int[,] outerAnchors = new int[4, 2] {
             {  0,  8 },
             {  8, 12 },
             { 12,  4 },
             {  4,  0 }
         };
 
-        int[,] innerAnchors = new int [8,2] {
+        int[,] innerAnchors = new int[8, 2] {
             {  2,  6 },
             {  6,  7 },
             {  7, 15 },
@@ -165,38 +191,35 @@ public class PrecastCulvert : MonoBehaviour
 
         for (int i = 0; i < 4; i++)
         {
-
             CreateQuadMesh(
                 anchors[outerAnchors[i, 0]],
                 anchors[outerAnchors[i, 1]],
                 clonedAnchors[outerAnchors[i, 0]],
                 clonedAnchors[outerAnchors[i, 1]]
             );
-
         }
 
         for (int i = 0; i < 8; i++)
         {
-
             CreateQuadMesh(
                 anchors[innerAnchors[i, 0]],
                 anchors[innerAnchors[i, 1]],
                 clonedAnchors[innerAnchors[i, 0]],
                 clonedAnchors[innerAnchors[i, 1]]
             );
-
         }
 
         #endregion
 
-        #region Marge all meshes
+        #region Merge all meshes
 
         MeshFilter[] meshFilters = GetComponentsInChildren<MeshFilter>();
         CombineInstance[] combine = new CombineInstance[meshFilters.Length];
 
         for (int i = 0; i < meshFilters.Length; i++)
         {
-            if (meshFilters[i].gameObject == gameObject) {
+            if (meshFilters[i].gameObject == gameObject)
+            {
                 continue;
             }
 
@@ -205,42 +228,48 @@ public class PrecastCulvert : MonoBehaviour
             Destroy(meshFilters[i].gameObject);
         }
 
-        Mesh mesh = new Mesh();
-        mesh.name = "PrecastCulvert";
+        Mesh mesh = new Mesh { name = "PrecastCulvert" };
         mesh.CombineMeshes(combine);
-        gameObject.GetComponent<MeshFilter>().sharedMesh = mesh;
+        _meshFilter.sharedMesh = mesh;
 
         #endregion
 
-        #region Save mesh to Assets floder if needed
+        #region Save mesh to Assets folder if needed
 
         if (saveMeshOnCreation)
         {
-            #if UNITY_EDITOR
-
+#if UNITY_EDITOR
             UnityEditor.AssetDatabase.CreateAsset(mesh, "Assets/" + mesh.name + ".asset");
             UnityEditor.AssetDatabase.SaveAssets();
-
-            #endif
+#endif
         }
 
         #endregion
-
     }
 
+    private GameObject CreateMeshSegment(Vector3[] vertices, int[] triangles, Vector2[] uvs)
+    {
+        var go = new GameObject();
+        go.transform.SetParent(transform, false);
+        segments.Add(go);
 
-    void CreateQuadMesh (Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4) {
-
-        Vector3[] vertices = new Vector3[4]
+        var mesh = new Mesh
         {
-            v1, v2, v3, v4
+            vertices = vertices,
+            triangles = triangles,
+            uv = uvs
         };
+        mesh.RecalculateNormals();
 
-        int[] triangles = new int[6]
-        {
-            0, 1, 2,
-            3, 2, 1
-        };
+        go.AddComponent<MeshFilter>().mesh = mesh;
+        return go;
+    }
+
+    void CreateQuadMesh(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4)
+    {
+        Vector3[] vertices = new Vector3[4] { v1, v2, v3, v4 };
+
+        int[] triangles = new int[6] { 0, 1, 2, 3, 2, 1 };
 
         Vector2[] uvs = new Vector2[4]
         {
@@ -250,33 +279,15 @@ public class PrecastCulvert : MonoBehaviour
             new Vector2(1f, 1f),
         };
 
-        GameObject go = new GameObject();
-        go.transform.parent = transform;
-        segments.Add(go);
-
-        Mesh m = new Mesh();
-        m.vertices = vertices;
-        m.triangles = triangles;
-        m.uv = uvs;
-        m.RecalculateNormals();
-
-        MeshFilter mf = go.AddComponent(typeof(MeshFilter)) as MeshFilter;
-        mf.mesh = m;
-
+        CreateMeshSegment(vertices, triangles, uvs);
     }
 
-    void CreateTriangleMesh (Vector3 v1, Vector3 v2, Vector3 v3) {
+    void CreateTriangleMesh(Vector3 v1, Vector3 v2, Vector3 v3)
+    {
+        Vector3[] vertices = new Vector3[3] { v1, v2, v3 };
 
-        Vector3[] vertices = new Vector3[3]
-        {
-            v1, v2, v3
-        };
+        int[] triangles = new int[3] { 0, 1, 2 };
 
-        int[] triangles = new int[3]
-        {
-            0, 1, 2
-        };
-        
         Vector2[] uvs = new Vector2[3]
         {
             new Vector2(0f, 0f),
@@ -284,19 +295,6 @@ public class PrecastCulvert : MonoBehaviour
             new Vector2(1f, 0f),
         };
 
-        GameObject go = new GameObject();
-        go.transform.parent = transform;
-        segments.Add(go);
-
-        Mesh m = new Mesh();
-        m.vertices = vertices;
-        m.triangles = triangles;
-        m.uv = uvs;
-        m.RecalculateNormals();
-        
-        MeshFilter mf = go.AddComponent(typeof(MeshFilter)) as MeshFilter;
-        mf.mesh = m;
-
+        CreateMeshSegment(vertices, triangles, uvs);
     }
-
 }
