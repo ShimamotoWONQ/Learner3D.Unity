@@ -16,14 +16,16 @@ public class FixedCamera : MonoBehaviour
     // readonly float maxAngleX = 30.0f;
     // readonly float maxAngleY = 40.0f;
 
+    void Awake()
+    {
+        camera = GetComponentInChildren<Camera>();
+        rigidBody = GetComponent<Rigidbody>();
+        rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
+    }
+
     public void Init()
     {
         doDisableInput = false;
-
-        camera = GetComponentInChildren<Camera>();
-
-        rigidBody = GetComponent<Rigidbody>();
-        rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
         rigidBody.useGravity = false;
     }
 
