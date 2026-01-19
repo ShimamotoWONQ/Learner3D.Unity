@@ -3,10 +3,14 @@ using UnityEngine;
 [RequireComponent( typeof(Rigidbody) )]
 public class FixedCamera : MonoBehaviour
 {
+    const float DefaultMouseSensitivity = 3.0f;
+    const float DefaultMoveSpeed = 10.0f;
+    static readonly Vector3 HorizontalMask = new Vector3(1, 0, 1);
+
     public new Camera camera;
     public bool doDisableInput;
-    public float mouseSensitivity = 3.0f;
-    public float moveSpeed = 10.0f;
+    public float mouseSensitivity = DefaultMouseSensitivity;
+    public float moveSpeed = DefaultMoveSpeed;
 
     Rigidbody rigidBody;
     float rotationX;
@@ -70,7 +74,7 @@ public class FixedCamera : MonoBehaviour
 
     void MoveCamera()
     {
-        Vector3 cameraForward = Vector3.Scale(camera.transform.forward, new Vector3(1, 0, 1)).normalized;
+        Vector3 cameraForward = Vector3.Scale(camera.transform.forward, HorizontalMask).normalized;
         Vector3 moveForward = cameraForward * movementVertical + camera.transform.right * movementHorizontal;
 
         rigidBody.linearVelocity = moveForward * moveSpeed;
