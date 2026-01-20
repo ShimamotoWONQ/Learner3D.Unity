@@ -12,28 +12,19 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] TMP_Text stepTitleViewer;
     [SerializeField] CameraManager cameraManager;
+    [SerializeField] InputManager inputManager;
 
     public void Init()
     {
         jsInterface.OnToggleMenuRequested += ToggleMenuPanel;
         menuPanel.OnResumeButtonClicked += ToggleMenuPanel;
 
+        inputManager.OnMenuKeyPressed += ToggleMenuPanel;
+        inputManager.OnToggleSidebarKeyPressed += ToggleSidebar;
+        inputManager.OnFullscreenKeyPressed += ToggleFullscreen;
+
         Screen.fullScreenMode = FullScreenMode.Windowed;
         Cursor.lockState = CursorLockMode.Locked;
-    }
-
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-            ToggleMenuPanel();
-
-        if (Input.GetKeyDown(KeyCode.C))
-            ToggleSidebar();
-
-        if (Input.GetKeyDown(KeyCode.F)) {
-            Screen.fullScreen = !Screen.fullScreen;
-            cameraManager.EnableUserInput();
-        }
     }
 
     public void LoadUI(string stepTitle)
@@ -87,6 +78,12 @@ public class UIManager : MonoBehaviour
         Cursor.visible = false;
     }
 
+    void ToggleFullscreen()
+    {
+        Screen.fullScreen = !Screen.fullScreen;
+        cameraManager.EnableUserInput();
+    }
+
     void OnDestroy()
     {
         if (jsInterface != null)
@@ -97,6 +94,13 @@ public class UIManager : MonoBehaviour
         if (menuPanel != null)
         {
             menuPanel.OnResumeButtonClicked -= ToggleMenuPanel;
+        }
+
+        if (inputManager != null)
+        {
+            inputManager.OnMenuKeyPressed -= ToggleMenuPanel;
+            inputManager.OnToggleSidebarKeyPressed -= ToggleSidebar;
+            inputManager.OnFullscreenKeyPressed -= ToggleFullscreen;
         }
     }
 }

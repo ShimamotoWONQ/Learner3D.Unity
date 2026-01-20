@@ -18,6 +18,8 @@ public class StepManager : MonoBehaviour
 
     [SerializeField] CommentSidebar commentSidebar;
     [SerializeField] MenuPanel menuPanel;
+    
+    [SerializeField] InputManager inputManager;
 
     int maxStepIndex;
     int currentStepIndex;
@@ -43,18 +45,6 @@ public class StepManager : MonoBehaviour
             Init(loadConfig);
 
         #endif
-    }
-
-    void Update ()
-    {
-        if (Input.GetKeyDown(KeyCode.L))
-            SkipToNextStep();
-
-        if (Input.GetKeyDown(KeyCode.J))
-            SkipToPrevStep();
-
-        if (Input.GetKeyDown(KeyCode.I))
-            EnterInspector();
     }
 
     void Init(LoadConfig loadConfig)
@@ -85,6 +75,10 @@ public class StepManager : MonoBehaviour
         menuPanel.OnNextStepButtonClicked += SkipToNextStep;
         menuPanel.OnPrevStepButtonClicked += SkipToPrevStep;
         menuPanel.OnQuitButtonClicked += UnloadStep;
+
+        inputManager.OnNextStepKeyPressed += SkipToNextStep;
+        inputManager.OnPrevStepKeyPressed += SkipToPrevStep;
+        inputManager.OnInspectorKeyPressed += EnterInspector;
     }
 
     void LoadStep(int stepIndex)
@@ -148,6 +142,13 @@ public class StepManager : MonoBehaviour
             menuPanel.OnNextStepButtonClicked -= SkipToNextStep;
             menuPanel.OnPrevStepButtonClicked -= SkipToPrevStep;
             menuPanel.OnQuitButtonClicked -= UnloadStep;
+        }
+
+        if (inputManager != null)
+        {
+            inputManager.OnNextStepKeyPressed -= SkipToNextStep;
+            inputManager.OnPrevStepKeyPressed -= SkipToPrevStep;
+            inputManager.OnInspectorKeyPressed -= EnterInspector;
         }
     }
 }
