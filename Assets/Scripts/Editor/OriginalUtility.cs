@@ -11,7 +11,7 @@ public class OriginalUtility : MonoBehaviour
 
     }
 
-    public void MargeChildrenMesh (GameObject parent) {
+    public void MergeChildrenMesh (GameObject parent) {
 
         MeshFilter[] meshFilters = parent.GetComponentsInChildren<MeshFilter>();
         CombineInstance[] combine = new CombineInstance[meshFilters.Length];

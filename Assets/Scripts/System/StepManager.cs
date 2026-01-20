@@ -29,7 +29,7 @@ public class StepManager : MonoBehaviour
 
     void Start()
     {
-        ResisterEvents();
+        RegisterEvents();
         
         jsInterface.NotifySceneLoaded();
 
@@ -75,7 +75,7 @@ public class StepManager : MonoBehaviour
         LoadStep(loadConfig.stepIndex);
     }
 
-    void ResisterEvents()
+    void RegisterEvents()
     {
         jsInterface.OnLoadStepRequested += Init;
         jsInterface.OnUnloadStepRequested += UnloadStep;
@@ -119,19 +119,19 @@ public class StepManager : MonoBehaviour
 
     public void SkipToNextStep()
     {
-        currentStepIndex = (currentStepIndex + maxStepIndex + 1 ) % maxStepIndex;
+        currentStepIndex = (currentStepIndex + 1) % maxStepIndex;
         LoadStep(currentStepIndex);
     }
 
     public void SkipToPrevStep()
     {
-        currentStepIndex = (currentStepIndex + maxStepIndex - 1 ) % maxStepIndex;
+        currentStepIndex = (currentStepIndex - 1 + maxStepIndex) % maxStepIndex;
         LoadStep(currentStepIndex);
     }
 
     public void EnterInspector()
     {
         cameraManager.RepositionCameras();
-        terrainManager.activeTerrain.EnableSecondlyLayer();
+        terrainManager.activeTerrain.EnableSecondaryLayer();
     }
 }

@@ -31,12 +31,12 @@ public class ControlSidebar : MonoBehaviour
 
     void Start()
     {
-        ResisterEvents();
+        RegisterEvents();
 
         OnTestButtonClicked += TestAction;
     }
 
-    public void WriteConsole (string text)
+    public void WriteConsole(string text)
     {
         consoleText.text += text + "\n";
     }
@@ -46,7 +46,7 @@ public class ControlSidebar : MonoBehaviour
         stepViewerText.text = text;
     }
 
-    void ResisterEvents()
+    void RegisterEvents()
     {
         nextStepButton.onClick.AddListener( () => OnNextStepButtonClicked?.Invoke() );
         prevStepButton.onClick.AddListener( () => OnPrevStepButtonClicked?.Invoke() );

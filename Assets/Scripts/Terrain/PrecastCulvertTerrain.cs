@@ -4,7 +4,7 @@ using UnityEngine;
 public class PrecastCulvertTerrain : MonoBehaviour
 {
     [SerializeField] TerrainLayer primaryTerrainLayer;
-    [SerializeField] TerrainLayer secondlyTerrainLayer;
+    [SerializeField] TerrainLayer secondaryTerrainLayer;
 
     [SerializeField] Vector3 positionOffset = new Vector3(-0.5f, 0f, -0.5f);
     [SerializeField] int w = 6;
@@ -189,9 +189,9 @@ public class PrecastCulvertTerrain : MonoBehaviour
         terrain.Flush();
     }
 
-    public void EnableSecondlyLayer()
+    public void EnableSecondaryLayer()
     {
-        terrainData.terrainLayers = new TerrainLayer[1]{ secondlyTerrainLayer };
+        terrainData.terrainLayers = new TerrainLayer[1]{ secondaryTerrainLayer };
         terrain.Flush();
     }
 }

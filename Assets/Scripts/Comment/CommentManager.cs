@@ -45,7 +45,7 @@ public class CommentManager : MonoBehaviour
     {
         GameObject commentCanvasObject = Instantiate(
                 commentCanvasPrefab,
-                detail.postion,
+                detail.position,
                 Quaternion.identity,
                 transform.parent.transform
             );
@@ -53,7 +53,7 @@ public class CommentManager : MonoBehaviour
         CommentCanvas commentCanvas = commentCanvasObject.GetComponent<CommentCanvas>();
         commentCanvas.Init(detail.stepIndex, detail.title, detail.text, targetCamera);
 
-        if (detail.URL == "")
+        if (string.IsNullOrEmpty(detail.URL))
             commentCanvas.DisableURLContainer();
         else
             commentCanvas.SetURL(detail.URLTitle, detail.URL);
