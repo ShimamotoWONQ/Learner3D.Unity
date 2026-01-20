@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class StepManager : MonoBehaviour
 {
+    const int DefaultStepIndex = 0;
+    const bool DefaultShowComment = true;
+    const bool DefaultAllowCommentVisibilityControl = true;
+
     [SerializeField] StepDetailData stepDetailData;
     [SerializeField] JSInterface jsInterface;
 
@@ -37,10 +41,12 @@ public class StepManager : MonoBehaviour
 
         #if UNITY_EDITOR && UNITY_WEBGL
 
-            LoadConfig loadConfig = new LoadConfig();
-            loadConfig.stepIndex = 0;
-            loadConfig.doShowComment = true;
-            loadConfig.doAllowCommentVisibilityControl = true;
+            LoadConfig loadConfig = new LoadConfig
+            {
+                stepIndex = DefaultStepIndex,
+                doShowComment = DefaultShowComment,
+                doAllowCommentVisibilityControl = DefaultAllowCommentVisibilityControl
+            };
 
             Init(loadConfig);
 
