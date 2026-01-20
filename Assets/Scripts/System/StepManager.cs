@@ -52,6 +52,12 @@ public class StepManager : MonoBehaviour
         currentStepIndex = 0;
         maxStepIndex = stepDetailData.list.Count;
 
+        if (maxStepIndex == 0)
+        {
+            Debug.LogError("[StepManager] Init: stepDetailData.list is empty");
+            return;
+        }
+
         cameraManager.Init();
         terrainManager.Init();
         commentManager.Init(loadConfig.doShowComment, loadConfig.doAllowCommentVisibilityControl);
@@ -62,7 +68,18 @@ public class StepManager : MonoBehaviour
         commentSidebar.Init();
         menuPanel.Init();
 
-        LoadStep(loadConfig.stepIndex);
+        int validStepIndex = ValidateStepIndex(loadConfig.stepIndex);
+        LoadStep(validStepIndex);
+    }
+
+    int ValidateStepIndex(int stepIndex)
+    {
+        if (stepIndex < 0 || stepIndex >= maxStepIndex)
+        {
+            Debug.LogWarning($"[StepManager] Invalid stepIndex: {stepIndex}. Valid range: 0-{maxStepIndex - 1}. Using 0.");
+            return 0;
+        }
+        return stepIndex;
     }
 
     void RegisterEvents()
@@ -83,6 +100,12 @@ public class StepManager : MonoBehaviour
 
     void LoadStep(int stepIndex)
     {
+        if (stepIndex < 0 || stepIndex >= maxStepIndex)
+        {
+            Debug.LogError($"[StepManager] LoadStep: Invalid stepIndex {stepIndex}");
+            return;
+        }
+
         currentStepIndex = stepIndex;
         StepDetail stepDetail = stepDetailData.list[stepIndex];
 
