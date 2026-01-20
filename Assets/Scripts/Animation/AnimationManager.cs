@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent( typeof(Animation) )]
@@ -11,17 +12,31 @@ public class AnimationManager : MonoBehaviour
 
     AnimationEndNotifier[] _currentNotifiers;
     Action[] _registeredHandlers;
+    Dictionary<int, AnimationEndNotifier[]> _notifierCache;
 
     public void Init()
     {
+        CacheAllNotifiers();
+    }
 
+    void CacheAllNotifiers()
+    {
+        _notifierCache = new Dictionary<int, AnimationEndNotifier[]>();
+
+        for (int i = 0; i < objectManager.stepObjectHolderList.Count; i++)
+        {
+            var notifiers = objectManager.stepObjectHolderList[i].gameObject.GetComponentsInChildren<AnimationEndNotifier>();
+            _notifierCache[i] = notifiers;
+        }
     }
 
     public void PlayAnimation(int stepIndex)
     {
         UnregisterPreviousListeners();
 
-        _currentNotifiers = objectManager.stepObjectHolderList[stepIndex].gameObject.GetComponentsInChildren<AnimationEndNotifier>();
+        _currentNotifiers = _notifierCache.TryGetValue(stepIndex, out var notifiers)
+            ? notifiers
+            : Array.Empty<AnimationEndNotifier>();
 
         if (_currentNotifiers.Length == 0)
         {

@@ -21,6 +21,7 @@ public class CommentCanvas : MonoBehaviour
     CanvasRotator canvasRotator;
     GraphicRaycaster graphicRaycaster;
     PointerEventData pointerEventData;
+    readonly List<RaycastResult> raycastResults = new List<RaycastResult>();
 
     public void Init(int stepIndex, string title, string text, Camera targetCamera)
     {
@@ -56,10 +57,10 @@ public class CommentCanvas : MonoBehaviour
         Vector3 centerOfScreen = targetCamera.ViewportToScreenPoint(new Vector3(0.5f, 0.5f, 0f));
         pointerEventData.position = new Vector2(centerOfScreen.x, centerOfScreen.y);
 
-        List<RaycastResult> results = new List<RaycastResult>();
-        graphicRaycaster.Raycast(pointerEventData, results);
+        raycastResults.Clear();
+        graphicRaycaster.Raycast(pointerEventData, raycastResults);
 
-        if (results.Count == 0) return;
+        if (raycastResults.Count == 0) return;
 
         if (commentIcon.activeInHierarchy)
         {
@@ -69,7 +70,7 @@ public class CommentCanvas : MonoBehaviour
 
         if (commentContent.activeInHierarchy)
         {
-            foreach (RaycastResult result in results)
+            foreach (RaycastResult result in raycastResults)
             {
                 if (result.gameObject == closeButton.gameObject)
                 {
