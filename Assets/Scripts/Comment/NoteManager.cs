@@ -108,4 +108,12 @@ public class NoteManager : MonoBehaviour
             canvas.gameObject.SetActive(false);
         }
     }
+
+    void OnDestroy()
+    {
+        if (menuPanel != null)
+        {
+            menuPanel.OnCommentVisibilityToggled -= ToggleNotesVisibility;
+        }
+    }
 }

@@ -134,4 +134,20 @@ public class StepManager : MonoBehaviour
         cameraManager.RepositionCameras();
         terrainManager.activeTerrain.EnableSecondaryLayer();
     }
+
+    void OnDestroy()
+    {
+        if (jsInterface != null)
+        {
+            jsInterface.OnLoadStepRequested -= Init;
+            jsInterface.OnUnloadStepRequested -= UnloadStep;
+        }
+
+        if (menuPanel != null)
+        {
+            menuPanel.OnNextStepButtonClicked -= SkipToNextStep;
+            menuPanel.OnPrevStepButtonClicked -= SkipToPrevStep;
+            menuPanel.OnQuitButtonClicked -= UnloadStep;
+        }
+    }
 }

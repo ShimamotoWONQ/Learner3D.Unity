@@ -86,4 +86,17 @@ public class UIManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
+
+    void OnDestroy()
+    {
+        if (jsInterface != null)
+        {
+            jsInterface.OnToggleMenuRequested -= ToggleMenuPanel;
+        }
+
+        if (menuPanel != null)
+        {
+            menuPanel.OnResumeButtonClicked -= ToggleMenuPanel;
+        }
+    }
 }

@@ -120,4 +120,12 @@ public class CommentManager : MonoBehaviour
                 canvas.Close();
         }
     }
+
+    void OnDestroy()
+    {
+        if (menuPanel != null)
+        {
+            menuPanel.OnCommentVisibilityToggled -= ToggleCommentsVisibility;
+        }
+    }
 }

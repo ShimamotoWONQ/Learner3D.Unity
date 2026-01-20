@@ -84,4 +84,14 @@ public class CameraManager : MonoBehaviour
         fixedCamera.doDisableInput = false;
         // Cursor.visible = false;
     }
+
+    void OnDestroy()
+    {
+        if (menuPanel != null)
+        {
+            menuPanel.OnPlayerCameraButtonClicked -= EnablePlayerCamera;
+            menuPanel.OnFixedCameraButtonClicked -= EnableFixedCamera;
+            menuPanel.OnRepositionCameraButtonClicked -= RepositionCameras;
+        }
+    }
 }
