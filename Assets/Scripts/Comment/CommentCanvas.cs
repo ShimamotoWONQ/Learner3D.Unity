@@ -37,10 +37,16 @@ public class CommentCanvas : MonoBehaviour
         graphicRaycaster = gameObject.GetComponent<GraphicRaycaster>();
         pointerEventData = new PointerEventData(EventSystem.current);
 
-        closeButton.onClick.AddListener( () => Close() );
+        closeButton.onClick.AddListener(Close);
     }
 
-   void Update()
+    void OnDestroy()
+    {
+        if (closeButton != null)
+            closeButton.onClick.RemoveListener(Close);
+    }
+
+    void Update()
     {
         if (Input.GetMouseButtonDown(0)) CheckForClick();
     }

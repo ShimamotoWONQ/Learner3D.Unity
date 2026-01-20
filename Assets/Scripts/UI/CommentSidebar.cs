@@ -46,7 +46,7 @@ public class CommentSidebar : MonoBehaviour
     {
         foreach (CommentIndex index in commentIndexList)
         {
-            DestroyImmediate(index.gameObject);
+            Destroy(index.gameObject);
         }
 
         commentIndexList.Clear();
