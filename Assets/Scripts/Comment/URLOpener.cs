@@ -13,19 +13,25 @@ public class URLOpener : MonoBehaviour
     GraphicRaycaster graphicRaycaster;
     PointerEventData pointerEventData;
     readonly List<RaycastResult> raycastResults = new List<RaycastResult>();
-    string URLTitle;
+    Vector2 screenCenter;
     string URL;
 
     public void Init(string URLTitle, string URL, Camera targetCamera, GraphicRaycaster graphicRaycaster)
     {
         this.URL = URL;
-        this.URLTitle = URLTitle;
         this.targetCamera = targetCamera;
         this.graphicRaycaster = graphicRaycaster;
 
         URLViewer.text = URLTitle;
 
         pointerEventData = new PointerEventData(EventSystem.current);
+        CacheScreenCenter();
+    }
+
+    void CacheScreenCenter()
+    {
+        Vector3 viewportCenter = targetCamera.ViewportToScreenPoint(new Vector3(0.5f, 0.5f, 0f));
+        screenCenter = new Vector2(viewportCenter.x, viewportCenter.y);
     }
 
     void Update()
@@ -35,15 +41,18 @@ public class URLOpener : MonoBehaviour
 
     void CheckForClick()
     {
-        Vector3 centerOfScreen = targetCamera.ViewportToScreenPoint(new Vector3(0.5f, 0.5f, 0f));
-        pointerEventData.position = new Vector2(centerOfScreen.x, centerOfScreen.y);
+        pointerEventData.position = screenCenter;
 
         raycastResults.Clear();
         graphicRaycaster.Raycast(pointerEventData, raycastResults);
 
         foreach (RaycastResult result in raycastResults)
         {
-            if (result.gameObject == gameObject) OpenURL();
+            if (result.gameObject == gameObject)
+            {
+                OpenURL();
+                return;
+            }
         }
     }
 
