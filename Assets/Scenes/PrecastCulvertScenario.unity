@@ -1627,6 +1627,7 @@ MonoBehaviour:
   playerCamera: {fileID: 1730800082973203205}
   fixedCamera: {fileID: 2070997427}
   menuPanel: {fileID: 9164929113318637646}
+  inputManager: {fileID: 1489423253}
   defaultPlayerCameraPosition: {x: 5, y: 10, z: -5}
   defaultPlayerCameraRotation: {x: 0, y: -40, z: 0}
   defaultFixedCameraPosition: {x: 0, y: 20, z: -10}
@@ -6982,6 +6983,7 @@ MonoBehaviour:
   uiManager: {fileID: 1047697321}
   commentSidebar: {fileID: 3964585313755763949}
   menuPanel: {fileID: 9164929113318637646}
+  inputManager: {fileID: 1489423253}
 --- !u!1001 &990348286
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7751,6 +7753,7 @@ MonoBehaviour:
   jsInterface: {fileID: 1525730302}
   stepTitleViewer: {fileID: 475456736}
   cameraManager: {fileID: 219927650}
+  inputManager: {fileID: 1489423253}
 --- !u!1 &1052873412
 GameObject:
   m_ObjectHideFlags: 0
@@ -11156,6 +11159,50 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2369248654827099283, guid: e5539f1d3829d43beb80f3fc3cce6198, type: 3}
   m_PrefabInstance: {fileID: 1487837743}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1489423251
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1489423252}
+  - component: {fileID: 1489423253}
+  m_Layer: 0
+  m_Name: InputManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1489423252
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1489423251}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1891149429}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1489423253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1489423251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58f9afa1373234d0cafc08df24d7c7dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InputManager
 --- !u!1 &1490801026
 GameObject:
   m_ObjectHideFlags: 0
@@ -14713,6 +14760,7 @@ Transform:
   - {fileID: 471654687}
   - {fileID: 983260282}
   - {fileID: 1525730301}
+  - {fileID: 1489423252}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1892722722
