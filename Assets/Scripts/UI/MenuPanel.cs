@@ -25,10 +25,10 @@ public class MenuPanel : MonoBehaviour
 
     public void Init()
     {
-        ResisterEvents();
+        RegisterEvents();
     }
 
-    void ResisterEvents()
+    void RegisterEvents()
     {
         resumeButton.onClick.AddListener( () => OnResumeButtonClicked?.Invoke() );
         quitButton.onClick.AddListener( () => OnQuitButtonClicked?.Invoke() );

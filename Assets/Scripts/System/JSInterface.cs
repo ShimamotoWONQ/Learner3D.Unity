@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using System.Runtime.InteropServices;
-using Unity.VisualScripting;
 
 [Serializable]
 public class LoadConfig
@@ -28,7 +27,29 @@ public class JSInterface : MonoBehaviour {
 
     public void RequestLoadStep(string loadConfig_JSON)
     {
-        LoadConfig loadConfig = JsonUtility.FromJson<LoadConfig>(loadConfig_JSON);
+        if (string.IsNullOrEmpty(loadConfig_JSON))
+        {
+            Debug.LogError("[JSInterface] RequestLoadStep: JSON string is null or empty");
+            return;
+        }
+
+        LoadConfig loadConfig;
+        try
+        {
+            loadConfig = JsonUtility.FromJson<LoadConfig>(loadConfig_JSON);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"[JSInterface] RequestLoadStep: Failed to parse JSON - {e.Message}");
+            return;
+        }
+
+        if (loadConfig == null)
+        {
+            Debug.LogError("[JSInterface] RequestLoadStep: Parsed LoadConfig is null");
+            return;
+        }
+
         OnLoadStepRequested?.Invoke(loadConfig);
     }
 

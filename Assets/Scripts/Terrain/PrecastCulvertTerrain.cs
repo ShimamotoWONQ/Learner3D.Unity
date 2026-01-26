@@ -4,15 +4,15 @@ using UnityEngine;
 public class PrecastCulvertTerrain : MonoBehaviour
 {
     [SerializeField] TerrainLayer primaryTerrainLayer;
-    [SerializeField] TerrainLayer secondlyTerrainLayer;
+    [SerializeField] TerrainLayer secondaryTerrainLayer;
 
     [SerializeField] Vector3 positionOffset = new Vector3(-0.5f, 0f, -0.5f);
-    [SerializeField] int w = 6;
-    [SerializeField] int h = 20;
-    [SerializeField] int wo = 3;
-    [SerializeField] int ho = 3;
-    [SerializeField] int d = 2;
-    [SerializeField] int bw = 3;
+    [SerializeField] int culvertWidth = 6;
+    [SerializeField] int culvertLength = 20;
+    [SerializeField] int widthOffset = 3;
+    [SerializeField] int lengthOffset = 3;
+    [SerializeField] int digDepth = 2;
+    [SerializeField] int trenchBottomWidth = 3;
 
     int terrainSize;
     int terrainHeight;
@@ -56,131 +56,92 @@ public class PrecastCulvertTerrain : MonoBehaviour
 
     public void DigFull()
     {
-        // DigByTrapezoidCentered(
-        //     width: w,
-        //     height: h,
-        //     widthOffset: wo,
-        //     heightOffset: ho,
-        //     depth: d,
-        //     bottomWidth: bw
-        // );
-
-        DigByTrapezoid(
-            width: this.w,
-            height: this.h + (terrainSize - this.h) / 2,
-            widthOffset: this.wo,
-            heightOffset: this.ho,
-            depth: this.d,
-            bottomWidth: this.bw
+        DigTrench(
+            width: culvertWidth,
+            length: culvertLength + (terrainSize - culvertLength) / 2,
+            widthOffset: widthOffset,
+            lengthOffset: lengthOffset,
+            depth: digDepth,
+            bottomWidth: trenchBottomWidth,
+            centered: false
         );
     }
 
     public void DigHalf()
     {
-        DigByTrapezoidCentered(
-            width: w,
-            height: h / 2,
-            widthOffset: wo,
-            heightOffset: ho + (h / 4),
-            depth: d,
-            bottomWidth: bw
+        DigTrench(
+            width: culvertWidth,
+            length: culvertLength / 2,
+            widthOffset: widthOffset,
+            lengthOffset: lengthOffset + (culvertLength / 4),
+            depth: digDepth,
+            bottomWidth: trenchBottomWidth,
+            centered: true
         );
     }
 
-    public void DigByTrapezoid(int width, int height, int widthOffset, int heightOffset, float depth, int bottomWidth)
+    /// <summary>
+    /// 台形断面の溝を掘削する
+    /// </summary>
+    /// <param name="width">溝の上部幅（メートル）</param>
+    /// <param name="length">溝の長さ（メートル）</param>
+    /// <param name="widthOffset">X軸方向のオフセット（メートル）</param>
+    /// <param name="lengthOffset">Z軸方向のオフセット（メートル）</param>
+    /// <param name="depth">掘削深さ（メートル）</param>
+    /// <param name="bottomWidth">溝の底部幅（メートル）</param>
+    /// <param name="centered">長さ方向を中央揃えにするか</param>
+    void DigTrench(int width, int length, int widthOffset, int lengthOffset, float depth, int bottomWidth, bool centered)
     {
-        int w = width * pointPerMeter;
-        int h = height * pointPerMeter;
-        int wo = ((terrainSize - width) / 2 + widthOffset) * pointPerMeter;
-        int ho = heightOffset * pointPerMeter;
+        int trenchWidthPoints = width * pointPerMeter;
+        int trenchLengthPoints = length * pointPerMeter;
+        int startX = ((terrainSize - width) / 2 + widthOffset) * pointPerMeter;
+        int startZ = centered
+            ? ((terrainSize - length) / 2 + lengthOffset) * pointPerMeter
+            : lengthOffset * pointPerMeter;
 
-        float d = depth / terrainHeight;
-        int bw = bottomWidth * pointPerMeter;
-        int slopeWidth = (w - bw) / 2;
-        float slopeGradient = d / slopeWidth;
+        float relativeDepth = depth / terrainHeight;
+        int bottomWidthPoints = bottomWidth * pointPerMeter;
+        int slopeWidthPoints = (trenchWidthPoints - bottomWidthPoints) / 2;
+        float slopeGradient = relativeDepth / slopeWidthPoints;
 
         float[,] heights = terrainData.GetHeights(0, 0, terrainData.heightmapResolution, terrainData.heightmapResolution);
 
-        int startWidth = wo;
+        int currentX = startX;
 
-        for (int x = startWidth; x < startWidth + slopeWidth; x++)
+        // 左側斜面
+        for (int x = currentX; x < currentX + slopeWidthPoints; x++)
         {
-            for (int y = ho; y < ho + h; y++)
+            float slopeDepth = slopeGradient * (x - currentX);
+            for (int z = startZ; z < startZ + trenchLengthPoints; z++)
             {
-                heights[y, x] = relativeHeight - (slopeGradient * (x - startWidth));
+                heights[z, x] = relativeHeight - slopeDepth;
             }
         }
 
-        startWidth += slopeWidth;
+        currentX += slopeWidthPoints;
 
-        for (int x = startWidth; x < startWidth + bw; x++)
+        // 底面
+        for (int x = currentX; x < currentX + bottomWidthPoints; x++)
         {
-            for (int y = ho; y < ho + h; y++)
+            for (int z = startZ; z < startZ + trenchLengthPoints; z++)
             {
-                heights[y, x] = relativeHeight - d;
+                heights[z, x] = relativeHeight - relativeDepth;
             }
         }
 
-        startWidth += bw;
+        currentX += bottomWidthPoints;
 
-        for (int x = startWidth; x < startWidth + slopeWidth; x++)
+        // 右側斜面
+        for (int x = currentX; x < currentX + slopeWidthPoints; x++)
         {
-            for (int y = ho; y < ho + h; y++)
+            float slopeDepth = slopeGradient * (slopeWidthPoints - (x - currentX));
+            for (int z = startZ; z < startZ + trenchLengthPoints; z++)
             {
-                heights[y, x] = relativeHeight - (slopeGradient * (slopeWidth - (x - startWidth)));
+                heights[z, x] = relativeHeight - slopeDepth;
             }
         }
 
         terrainData.SetHeights(0, 0, heights);
-
-    }
-
-    void DigByTrapezoidCentered(int width, int height, int widthOffset, int heightOffset, float depth, int bottomWidth)
-    {
-        int w = width * pointPerMeter;
-        int h = height * pointPerMeter;
-        int wo = ((terrainSize - width) / 2 + widthOffset) * pointPerMeter;
-        int ho = ((terrainSize - height) / 2 + heightOffset) * pointPerMeter;
-
-        float d = depth / terrainHeight;
-        int bw = bottomWidth * pointPerMeter;
-        int slopeWidth = (w - bw) / 2;
-        float slopeGradient = d / slopeWidth;
-
-        float[,] heights = terrainData.GetHeights(0, 0, terrainData.heightmapResolution, terrainData.heightmapResolution);
-
-        int startWidth = wo;
-
-        for (int x = startWidth; x < startWidth + slopeWidth; x++)
-        {
-            for (int y = ho; y < ho + h; y++)
-            {
-                heights[y, x] = relativeHeight - (slopeGradient * (x - startWidth));
-            }
-        }
-
-        startWidth += slopeWidth;
-
-        for (int x = startWidth; x < startWidth + bw; x++)
-        {
-            for (int y = ho; y < ho + h; y++)
-            {
-                heights[y, x] = relativeHeight - d;
-            }
-        }
-
-        startWidth += bw;
-
-        for (int x = startWidth; x < startWidth + slopeWidth; x++)
-        {
-            for (int y = ho; y < ho + h; y++)
-            {
-                heights[y, x] = relativeHeight - (slopeGradient * (slopeWidth - (x - startWidth)));
-            }
-        }
-
-        terrainData.SetHeights(0, 0, heights);
-
     }
 
     public void EnablePrimaryLayer()
@@ -189,9 +150,9 @@ public class PrecastCulvertTerrain : MonoBehaviour
         terrain.Flush();
     }
 
-    public void EnableSecondlyLayer()
+    public void EnableSecondaryLayer()
     {
-        terrainData.terrainLayers = new TerrainLayer[1]{ secondlyTerrainLayer };
+        terrainData.terrainLayers = new TerrainLayer[1]{ secondaryTerrainLayer };
         terrain.Flush();
     }
 }

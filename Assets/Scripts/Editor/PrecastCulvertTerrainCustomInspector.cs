@@ -53,10 +53,10 @@ public class PrecastCulvertTerrainCustomInspector : Editor
             Debug.Log("Enabled Primary Layer");
         }
 
-        if (GUILayout.Button("Secondly Layer"))
+        if (GUILayout.Button("Secondary Layer"))
         {
-            precastCulvertTerrain.EnableSecondlyLayer();
-            Debug.Log("Enabled Secondly Layer");
+            precastCulvertTerrain.EnableSecondaryLayer();
+            Debug.Log("Enabled Secondary Layer");
         }
     }
 }

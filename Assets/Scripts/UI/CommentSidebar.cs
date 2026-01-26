@@ -4,7 +4,7 @@ using TMPro;
 
 public class CommentSidebar : MonoBehaviour
 {
-    [SerializeField] TMP_Text SumViewer;
+    [SerializeField] TMP_Text sumViewer;
 
     [SerializeField] GameObject parentObject;
     [SerializeField] GameObject commentIndexPrefab;
@@ -29,7 +29,7 @@ public class CommentSidebar : MonoBehaviour
         {
             GameObject go = Instantiate(
                 commentIndexPrefab,
-                commentDetail.postion,
+                commentDetail.position,
                 Quaternion.identity,
                 parentObject.transform
             );
@@ -46,7 +46,7 @@ public class CommentSidebar : MonoBehaviour
     {
         foreach (CommentIndex index in commentIndexList)
         {
-            DestroyImmediate(index.gameObject);
+            Destroy(index.gameObject);
         }
 
         commentIndexList.Clear();
@@ -54,6 +54,6 @@ public class CommentSidebar : MonoBehaviour
 
     void ShowSum (int sum)
     {
-        SumViewer.text = sum.ToString();
+        sumViewer.text = sum.ToString();
     }
 }
