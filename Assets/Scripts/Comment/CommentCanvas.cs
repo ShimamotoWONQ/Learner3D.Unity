@@ -21,6 +21,8 @@ public class CommentCanvas : MonoBehaviour
     CanvasRotator canvasRotator;
     GraphicRaycaster graphicRaycaster;
     PointerEventData pointerEventData;
+    readonly List<RaycastResult> raycastResults = new List<RaycastResult>();
+    Vector2 screenCenter;
 
     public void Init(int stepIndex, string title, string text, Camera targetCamera)
     {
@@ -29,31 +31,44 @@ public class CommentCanvas : MonoBehaviour
         commentText.text = text;
 
         this.targetCamera = targetCamera;
-        gameObject.GetComponent<Canvas>().worldCamera = targetCamera;
+        GetComponent<Canvas>().worldCamera = targetCamera;
 
         canvasRotator = GetComponent<CanvasRotator>();
         canvasRotator.Init(targetCamera);
 
-        graphicRaycaster = gameObject.GetComponent<GraphicRaycaster>();
+        graphicRaycaster = GetComponent<GraphicRaycaster>();
         pointerEventData = new PointerEventData(EventSystem.current);
 
-        closeButton.onClick.AddListener( () => Close() );
+        closeButton.onClick.AddListener(Close);
+
+        CacheScreenCenter();
     }
 
-   void Update()
+    void CacheScreenCenter()
+    {
+        Vector3 viewportCenter = targetCamera.ViewportToScreenPoint(new Vector3(0.5f, 0.5f, 0f));
+        screenCenter = new Vector2(viewportCenter.x, viewportCenter.y);
+    }
+
+    void OnDestroy()
+    {
+        if (closeButton != null)
+            closeButton.onClick.RemoveListener(Close);
+    }
+
+    void Update()
     {
         if (Input.GetMouseButtonDown(0)) CheckForClick();
     }
 
     void CheckForClick()
     {
-        Vector3 centerOfScreen = targetCamera.ViewportToScreenPoint(new Vector3(0.5f, 0.5f, 0f));
-        pointerEventData.position = new Vector2(centerOfScreen.x, centerOfScreen.y);
+        pointerEventData.position = screenCenter;
 
-        List<RaycastResult> results = new List<RaycastResult>();
-        graphicRaycaster.Raycast(pointerEventData, results);
+        raycastResults.Clear();
+        graphicRaycaster.Raycast(pointerEventData, raycastResults);
 
-        if (results.Count == 0) return;
+        if (raycastResults.Count == 0) return;
 
         if (commentIcon.activeInHierarchy)
         {
@@ -63,7 +78,7 @@ public class CommentCanvas : MonoBehaviour
 
         if (commentContent.activeInHierarchy)
         {
-            foreach (RaycastResult result in results)
+            foreach (RaycastResult result in raycastResults)
             {
                 if (result.gameObject == closeButton.gameObject)
                 {

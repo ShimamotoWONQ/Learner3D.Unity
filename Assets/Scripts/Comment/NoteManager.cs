@@ -42,7 +42,7 @@ public class NoteManager : MonoBehaviour
                 continue;
             }
 
-            foreach (int stepIndex in detail.stepIndexs)
+            foreach (int stepIndex in detail.stepIndices)
             {
                 NoteCanvas noteCanvas = CreateNoteCanvas(detail);
                 StepObjectHolder holder = objectManager.stepObjectHolderList[stepIndex];
@@ -56,7 +56,7 @@ public class NoteManager : MonoBehaviour
     {
         GameObject commentCanvasObject = Instantiate(
             noteCanvasPrefab,
-            detail.postion,
+            detail.position,
             Quaternion.identity,
             transform.parent.transform
         );
@@ -106,6 +106,14 @@ public class NoteManager : MonoBehaviour
         foreach (NoteCanvas canvas in noteCanvasList)
         {
             canvas.gameObject.SetActive(false);
+        }
+    }
+
+    void OnDestroy()
+    {
+        if (menuPanel != null)
+        {
+            menuPanel.OnCommentVisibilityToggled -= ToggleNotesVisibility;
         }
     }
 }

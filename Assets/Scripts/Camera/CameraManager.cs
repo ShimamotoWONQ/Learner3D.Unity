@@ -6,6 +6,7 @@ public class CameraManager : MonoBehaviour
     [SerializeField] FixedCamera fixedCamera;
 
     [SerializeField] MenuPanel menuPanel;
+    [SerializeField] InputManager inputManager;
 
     [SerializeField] Vector3 defaultPlayerCameraPosition;
     [SerializeField] Vector3 defaultPlayerCameraRotation;
@@ -26,13 +27,9 @@ public class CameraManager : MonoBehaviour
         menuPanel.OnPlayerCameraButtonClicked += EnablePlayerCamera;
         menuPanel.OnFixedCameraButtonClicked += EnableFixedCamera;
         menuPanel.OnRepositionCameraButtonClicked += RepositionCameras;
-    }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.E)) ToggleCamera();
-
-        if (Input.GetKeyDown(KeyCode.R)) RepositionCameras();
+        inputManager.OnToggleCameraKeyPressed += ToggleCamera;
+        inputManager.OnRepositionCameraKeyPressed += RepositionCameras;
     }
 
     public void RepositionCameras()
@@ -83,5 +80,21 @@ public class CameraManager : MonoBehaviour
         playerCamera.doDisableInput = false;
         fixedCamera.doDisableInput = false;
         // Cursor.visible = false;
+    }
+
+    void OnDestroy()
+    {
+        if (menuPanel != null)
+        {
+            menuPanel.OnPlayerCameraButtonClicked -= EnablePlayerCamera;
+            menuPanel.OnFixedCameraButtonClicked -= EnableFixedCamera;
+            menuPanel.OnRepositionCameraButtonClicked -= RepositionCameras;
+        }
+
+        if (inputManager != null)
+        {
+            inputManager.OnToggleCameraKeyPressed -= ToggleCamera;
+            inputManager.OnRepositionCameraKeyPressed -= RepositionCameras;
+        }
     }
 }

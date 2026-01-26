@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "NoteDetailData", menuName = "Scriptable Objects/NoteDetailData")]
 public class NoteDetailData : ScriptableObject
@@ -14,8 +15,9 @@ public class NoteDetail
     public int stepIndex;
     public string title;
     public bool doShowAlways;
-    public List<int> stepIndexs;
-    public Vector3 postion;
+    [FormerlySerializedAs("stepIndexs")]
+    public List<int> stepIndices;
+    public Vector3 position;
     public NoteColor noteColor;
 }
 

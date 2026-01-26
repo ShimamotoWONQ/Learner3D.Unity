@@ -18,5 +18,5 @@ public class CommentDetail
     public string text;
     public string URL;
     public string URLTitle;
-    public Vector3 postion;
+    public Vector3 position;
 }
