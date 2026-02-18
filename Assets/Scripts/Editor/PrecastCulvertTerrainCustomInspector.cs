@@ -13,7 +13,6 @@ public class PrecastCulvertTerrainCustomInspector : Editor
         precastCulvertTerrain.Init(
             terrainSize: 200,
             terrainHeight: 10,
-            defaultHeight: 3f,
             basePosition: new Vector3(0, 5f, 0)
         );
     }
