@@ -1970,15 +1970,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: bca069fabf8554cd4be9b180db5ca47d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.3699168
+      value: -10.4
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: bca069fabf8554cd4be9b180db5ca47d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 9.110001
+      value: 10.3
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: bca069fabf8554cd4be9b180db5ca47d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 14.060031
+      value: 26.4
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: bca069fabf8554cd4be9b180db5ca47d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3079,7 +3079,6 @@ MonoBehaviour:
   - state: 0
     terrain: {fileID: 843164893}
   basePosition: {x: 0, y: 8, z: 0}
-  defaultHeight: 30
   terrainSize: 200
   terrainHeight: 30
 --- !u!1 &1978651206

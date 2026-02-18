@@ -12,3 +12,5 @@ UserSettings
 *.suo
 *.tmp
 .DS_Store
+
+.claude
