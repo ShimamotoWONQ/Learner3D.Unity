@@ -44,6 +44,12 @@ public class NoteManager : MonoBehaviour
 
             foreach (int stepIndex in detail.stepIndices)
             {
+                if (stepIndex < 0 || stepIndex >= objectManager.stepObjectHolderList.Count)
+                {
+                    Debug.LogWarning($"NoteDetail '{detail.title}' has invalid stepIndex {stepIndex}. Skipping.");
+                    continue;
+                }
+
                 NoteCanvas noteCanvas = CreateNoteCanvas(detail);
                 StepObjectHolder holder = objectManager.stepObjectHolderList[stepIndex];
                 noteCanvas.transform.SetParent(holder.transform);

@@ -34,6 +34,12 @@ public class CommentManager : MonoBehaviour
     {
         foreach (CommentDetail detail in commentDetailData.list)
         {
+            if (detail.stepIndex < 0 || detail.stepIndex >= objectManager.stepObjectHolderList.Count)
+            {
+                Debug.LogWarning($"CommentDetail '{detail.title}' has invalid stepIndex {detail.stepIndex}. Skipping.");
+                continue;
+            }
+
             CommentCanvas commentCanvas = CreateCommentCanvas(detail);
             StepObjectHolder holder = objectManager.stepObjectHolderList[detail.stepIndex];
             commentCanvas.transform.SetParent(holder.transform);
