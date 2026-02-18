@@ -5,7 +5,7 @@ public class PrecastCulvertTerrain : BaseTerrain
     [SerializeField] TerrainLayer primaryTerrainLayer;
     [SerializeField] TerrainLayer secondaryTerrainLayer;
 
-    [SerializeField] int defaultHeight = 8;
+    [SerializeField] float defaultHeight = 3f;
     [SerializeField] int culvertWidth = 6;
     [SerializeField] int culvertLength = 20;
     [SerializeField] int widthOffset = 3;
