@@ -1,12 +1,11 @@
 using UnityEngine;
 
-[RequireComponent( typeof(Terrain) )]
-public class PrecastCulvertTerrain : MonoBehaviour
+public class PrecastCulvertTerrain : BaseTerrain
 {
     [SerializeField] TerrainLayer primaryTerrainLayer;
     [SerializeField] TerrainLayer secondaryTerrainLayer;
 
-    [SerializeField] Vector3 positionOffset = new Vector3(-0.5f, 0f, -0.5f);
+    [SerializeField] int defaultHeight = 8;
     [SerializeField] int culvertWidth = 6;
     [SerializeField] int culvertLength = 20;
     [SerializeField] int widthOffset = 3;
@@ -14,34 +13,10 @@ public class PrecastCulvertTerrain : MonoBehaviour
     [SerializeField] int digDepth = 2;
     [SerializeField] int trenchBottomWidth = 3;
 
-    int terrainSize;
-    int terrainHeight;
-    float relativeHeight;
-    Terrain terrain;
-    TerrainData terrainData;
-    int pointPerMeter;
-
-    public void Init(int terrainSize, int terrainHeight, float defaultHeight, Vector3 basePosition)
-    {
-        this.terrainSize = terrainSize;
-        this.terrainHeight = terrainHeight;
-        this.relativeHeight = defaultHeight / terrainHeight;
-
-        terrain = GetComponent<Terrain>();
-        terrainData = terrain.terrainData;
-        terrainData.size = new Vector3(terrainSize, terrainHeight, terrainSize);
-
-        pointPerMeter = terrainData.heightmapResolution / terrainSize;
-
-        transform.position = new Vector3(-terrainSize/2, 0f, -terrainSize/2);
-        transform.position += basePosition;
-        transform.position += positionOffset;
-    }
-
     public void Flatten()
     {
-
         float[,] heights = terrainData.GetHeights(0, 0, terrainData.heightmapResolution, terrainData.heightmapResolution);
+        float relativeHeight = defaultHeight / terrainHeight;
 
         for (int x = 0; x < heights.GetLength(1); x++)
         {
@@ -92,6 +67,7 @@ public class PrecastCulvertTerrain : MonoBehaviour
     /// <param name="centered">長さ方向を中央揃えにするか</param>
     void DigTrench(int width, int length, int widthOffset, int lengthOffset, float depth, int bottomWidth, bool centered)
     {
+        float relativeHeight = defaultHeight / terrainHeight;
         int trenchWidthPoints = width * pointPerMeter;
         int trenchLengthPoints = length * pointPerMeter;
         int startX = ((terrainSize - width) / 2 + widthOffset) * pointPerMeter;
@@ -144,7 +120,7 @@ public class PrecastCulvertTerrain : MonoBehaviour
         terrainData.SetHeights(0, 0, heights);
     }
 
-    public void EnablePrimaryLayer()
+        public void EnablePrimaryLayer()
     {
         terrainData.terrainLayers = new TerrainLayer[1]{ primaryTerrainLayer };
         terrain.Flush();
@@ -155,4 +131,5 @@ public class PrecastCulvertTerrain : MonoBehaviour
         terrainData.terrainLayers = new TerrainLayer[1]{ secondaryTerrainLayer };
         terrain.Flush();
     }
+
 }
