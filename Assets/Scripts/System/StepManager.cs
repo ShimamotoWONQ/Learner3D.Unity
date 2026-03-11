@@ -155,7 +155,6 @@ public class StepManager : MonoBehaviour
     public void EnterInspector()
     {
         cameraManager.RepositionCameras();
-        terrainManager.activeTerrain.EnableSecondaryLayer();
     }
 
     void OnDestroy()

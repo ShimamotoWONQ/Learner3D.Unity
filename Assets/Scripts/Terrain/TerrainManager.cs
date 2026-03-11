@@ -1,33 +1,29 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class TerrainManager : MonoBehaviour
 {
-    [SerializeField] PrecastCulvertTerrain flatTerrain;
-    [SerializeField] PrecastCulvertTerrain halfDiggedTerrain;
-    [SerializeField] PrecastCulvertTerrain fullDiggedTerrain;
+    [SerializeField] List<TerrainEntry> terrainEntries;
     [SerializeField] Vector3 basePosition;
-    [SerializeField] float defaultHeight = 3f;
+    [SerializeField] int terrainSize = 200;
+    [SerializeField] int terrainHeight = 20;
 
-    public PrecastCulvertTerrain activeTerrain;
+    public BaseTerrain activeTerrain { get; private set; }
 
-    const int TerrainSize = 200;
-    const int TerrainHeight = 10;
-
-    Dictionary<TerrainState, PrecastCulvertTerrain> terrainMap;
+    Dictionary<TerrainState, BaseTerrain> terrainMap;
 
     public void Init()
     {
-        terrainMap = new Dictionary<TerrainState, PrecastCulvertTerrain>
+        terrainMap = new Dictionary<TerrainState, BaseTerrain>();
+        foreach (var entry in terrainEntries)
         {
-            { TerrainState.Flat, flatTerrain },
-            { TerrainState.Half, halfDiggedTerrain },
-            { TerrainState.Full, fullDiggedTerrain }
-        };
+            terrainMap[entry.state] = entry.terrain;
+        }
 
         foreach (var terrain in terrainMap.Values)
         {
-            terrain.Init(TerrainSize, TerrainHeight, defaultHeight, basePosition);
+            terrain.Init(terrainSize, terrainHeight, basePosition);
         }
     }
 
@@ -41,4 +37,11 @@ public class TerrainManager : MonoBehaviour
 
         activeTerrain = terrainMap[terrainState];
     }
+}
+
+[Serializable]
+public class TerrainEntry
+{
+    public TerrainState state;
+    public BaseTerrain terrain;
 }
