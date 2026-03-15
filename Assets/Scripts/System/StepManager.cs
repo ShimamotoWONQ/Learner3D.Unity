@@ -21,8 +21,10 @@ public class StepManager : MonoBehaviour
 
     [SerializeField] CommentSidebar commentSidebar;
     [SerializeField] MenuPanel menuPanel;
-    
+
     [SerializeField] InputManager inputManager;
+
+    [SerializeField] AnimationManager animationManager;
 
     int maxStepIndex;
     int currentStepIndex;
@@ -65,6 +67,7 @@ public class StepManager : MonoBehaviour
 
         cameraManager.Init();
         // terrainManager.Init();
+        animationManager.Init();
         commentManager.Init(loadConfig.doShowComment, loadConfig.doAllowCommentVisibilityControl);
         noteManager.Init(loadConfig.doShowComment, loadConfig.doAllowCommentVisibilityControl);
         uiManager.Init();
@@ -91,13 +94,16 @@ public class StepManager : MonoBehaviour
         jsInterface.OnLoadStepRequested += Init;
         jsInterface.OnUnloadStepRequested += UnloadStep;
 
-        menuPanel.OnNextStepButtonClicked += SkipToNextStep;
-        menuPanel.OnPrevStepButtonClicked += SkipToPrevStep;
+        menuPanel.OnNextStepButtonClicked += animationManager.Next;
+        menuPanel.OnPrevStepButtonClicked += animationManager.Back;
         menuPanel.OnQuitButtonClicked += UnloadStep;
 
-        inputManager.OnNextStepKeyPressed += SkipToNextStep;
-        inputManager.OnPrevStepKeyPressed += SkipToPrevStep;
+        inputManager.OnNextStepKeyPressed += animationManager.Next;
+        inputManager.OnPrevStepKeyPressed += animationManager.Back;
         inputManager.OnInspectorKeyPressed += EnterInspector;
+
+        animationManager.OnNextStepRequested += SkipToNextStep;
+        animationManager.OnPrevStepRequested += SkipToPrevStep;
     }
 
     void LoadStep(int stepIndex)
@@ -123,22 +129,9 @@ public class StepManager : MonoBehaviour
 
         uiManager.LoadUI(stepDetail.title);
 
-        if (stepDetail.isAnimated)
-            PlayAnimation(stepIndex);
+        animationManager.PlayAnimation(stepIndex);
 
         jsInterface.NotifyStepLoaded(stepIndex);
-    }
-
-    void PlayAnimation(int stepIndex)
-    {
-        var holder = objectManager.stepObjectHolderList[stepIndex];
-        var sequence = holder.GetComponentInChildren<AnimationSequence>();
-        if (sequence == null)
-        {
-            Debug.LogError($"[StepManager] AnimationSequence not found on step {stepIndex}");
-            return;
-        }
-        sequence.Play();
     }
 
     public void UnloadStep()
@@ -175,16 +168,22 @@ public class StepManager : MonoBehaviour
 
         if (menuPanel != null)
         {
-            menuPanel.OnNextStepButtonClicked -= SkipToNextStep;
-            menuPanel.OnPrevStepButtonClicked -= SkipToPrevStep;
+            menuPanel.OnNextStepButtonClicked -= animationManager.Next;
+            menuPanel.OnPrevStepButtonClicked -= animationManager.Back;
             menuPanel.OnQuitButtonClicked -= UnloadStep;
         }
 
         if (inputManager != null)
         {
-            inputManager.OnNextStepKeyPressed -= SkipToNextStep;
-            inputManager.OnPrevStepKeyPressed -= SkipToPrevStep;
+            inputManager.OnNextStepKeyPressed -= animationManager.Next;
+            inputManager.OnPrevStepKeyPressed -= animationManager.Back;
             inputManager.OnInspectorKeyPressed -= EnterInspector;
+        }
+
+        if (animationManager != null)
+        {
+            animationManager.OnNextStepRequested -= SkipToNextStep;
+            animationManager.OnPrevStepRequested -= SkipToPrevStep;
         }
     }
 }
