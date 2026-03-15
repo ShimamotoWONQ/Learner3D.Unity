@@ -17,7 +17,6 @@ public class StepManager : MonoBehaviour
     [SerializeField] CommentManager commentManager;
     [SerializeField] NoteManager noteManager;
 
-    [SerializeField] AnimationManager animationManager;
     [SerializeField] UIManager uiManager;
 
     [SerializeField] CommentSidebar commentSidebar;
@@ -68,7 +67,6 @@ public class StepManager : MonoBehaviour
         terrainManager.Init();
         commentManager.Init(loadConfig.doShowComment, loadConfig.doAllowCommentVisibilityControl);
         noteManager.Init(loadConfig.doShowComment, loadConfig.doAllowCommentVisibilityControl);
-        animationManager.Init();
         uiManager.Init();
 
         commentSidebar.Init();
@@ -92,8 +90,6 @@ public class StepManager : MonoBehaviour
     {
         jsInterface.OnLoadStepRequested += Init;
         jsInterface.OnUnloadStepRequested += UnloadStep;
-
-        // animationManager.OnAllAnimationEnded += SkipToNextStep;
 
         menuPanel.OnNextStepButtonClicked += SkipToNextStep;
         menuPanel.OnPrevStepButtonClicked += SkipToPrevStep;
@@ -128,9 +124,21 @@ public class StepManager : MonoBehaviour
         uiManager.LoadUI(stepDetail.title);
 
         if (stepDetail.isAnimated)
-            animationManager.PlayAnimation(stepIndex);
+            PlayAnimation(stepIndex);
 
         jsInterface.NotifyStepLoaded(stepIndex);
+    }
+
+    void PlayAnimation(int stepIndex)
+    {
+        var holder = objectManager.stepObjectHolderList[stepIndex];
+        var sequence = holder.GetComponentInChildren<AnimationSequence>();
+        if (sequence == null)
+        {
+            Debug.LogError($"[StepManager] AnimationSequence not found on step {stepIndex}");
+            return;
+        }
+        sequence.Play();
     }
 
     public void UnloadStep()
