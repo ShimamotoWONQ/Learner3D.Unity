@@ -7,6 +7,8 @@ public class AnimationStepNode : MonoBehaviour
     public event Action<AnimationStepNode> OnCompleted;
 
     Animator _animator;
+    bool _isPlaying;
+    float _prevNormalizedTime;
 
     void Awake()
     {
@@ -14,10 +16,29 @@ public class AnimationStepNode : MonoBehaviour
         _animator.speed = 0f; // StepManager が Play() を呼ぶまで自動再生しない
     }
 
+    void Update()
+    {
+        if (!_isPlaying) return;
+        float normalizedTime = _animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+
+        // transition で 1.0 をスキップして先頭に戻った場合をループとして検出
+        bool looped = _prevNormalizedTime > 0.9f && normalizedTime < 0.1f;
+        _prevNormalizedTime = normalizedTime;
+
+        if (looped)
+        {
+            _isPlaying = false;
+            _animator.speed = 0f;
+            OnCompleted?.Invoke(this);
+        }
+    }
+
     /// <summary>通常再生。Entry から再生を開始する。</summary>
     public void Play()
     {
         if (!Validate()) return;
+        _isPlaying = true;
+        _prevNormalizedTime = 0f;
         _animator.speed = 1f;
         _animator.Rebind();
         _animator.Update(0f);
@@ -38,14 +59,8 @@ public class AnimationStepNode : MonoBehaviour
 
     public void Stop()
     {
+        _isPlaying = false;
         if (_animator != null) _animator.speed = 0f;
-    }
-
-    /// <summary>Animation Event から呼ぶ。Stop してループを防いだうえで終了を通知する。</summary>
-    public void NotifyCompleted()
-    {
-        Stop();
-        OnCompleted?.Invoke(this);
     }
 
     bool Validate()
