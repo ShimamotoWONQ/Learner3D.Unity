@@ -11,7 +11,7 @@ public class StepManager : MonoBehaviour
 
     [SerializeField] CameraManager cameraManager;
 
-    [SerializeField] TerrainManager terrainManager;
+    // [SerializeField] TerrainManager terrainManager;
     [SerializeField] ObjectManager objectManager;
 
     [SerializeField] CommentManager commentManager;
@@ -64,7 +64,7 @@ public class StepManager : MonoBehaviour
         }
 
         cameraManager.Init();
-        terrainManager.Init();
+        // terrainManager.Init();
         commentManager.Init(loadConfig.doShowComment, loadConfig.doAllowCommentVisibilityControl);
         noteManager.Init(loadConfig.doShowComment, loadConfig.doAllowCommentVisibilityControl);
         uiManager.Init();
@@ -114,7 +114,7 @@ public class StepManager : MonoBehaviour
         if (stepDetail.doRepositionCameras)
             cameraManager.RepositionCameras();
 
-        terrainManager.EnableTerrain(stepDetail.terrainState);
+        // terrainManager.EnableTerrain(stepDetail.terrainState);
         objectManager.ShowObjects(stepIndex);
 
         commentManager.ShowComments(stepIndex);
