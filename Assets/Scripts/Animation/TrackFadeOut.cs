@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CarGroundAlign : CustomAnimationScript
+public class TrackFadeOut : CustomAnimationScript
 {
     public float speed = 8f;
     public float rayLength = 2f;
