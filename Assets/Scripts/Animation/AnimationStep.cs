@@ -5,7 +5,7 @@ using UnityEngine;
 [Serializable]
 public class AnimationStep
 {
-    [SerializeField] List<AnimationStepNode> nodes;
+    [SerializeField] List<AnimationNodeBase> nodes;
 
     public event Action OnStepCompleted;
 
@@ -59,7 +59,7 @@ public class AnimationStep
         }
     }
 
-    void OnNodeCompleted(AnimationStepNode node)
+    void OnNodeCompleted(AnimationNodeBase node)
     {
         node.OnCompleted -= OnNodeCompleted;
         _completedCount++;

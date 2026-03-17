@@ -1,11 +1,8 @@
-using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
-public class AnimationStepNode : MonoBehaviour
+public class AnimationStepNode : AnimationNodeBase
 {
-    public event Action<AnimationStepNode> OnCompleted;
-
     Animator _animator;
     bool _isPlaying;
     float _prevNormalizedTime;
@@ -29,12 +26,12 @@ public class AnimationStepNode : MonoBehaviour
         {
             _isPlaying = false;
             _animator.speed = 0f;
-            OnCompleted?.Invoke(this);
+            NotifyCompleted();
         }
     }
 
     /// <summary>通常再生。Entry から再生を開始する。</summary>
-    public void Play()
+    public override void Play()
     {
         if (!Validate()) return;
         _isPlaying = true;
@@ -45,19 +42,19 @@ public class AnimationStepNode : MonoBehaviour
     }
 
     /// <summary>前ステップへ戻る際の再生。Play() と同じく Entry から再生し直す。</summary>
-    public void ResetAndPlay() => Play();
+    public override void ResetAndPlay() => Play();
 
-    public void Pause()
+    public override void Pause()
     {
         if (_animator != null) _animator.speed = 0f;
     }
 
-    public void Resume()
+    public override void Resume()
     {
         if (_animator != null) _animator.speed = 1f;
     }
 
-    public void Stop()
+    public override void Stop()
     {
         _isPlaying = false;
         if (_animator != null) _animator.speed = 0f;
