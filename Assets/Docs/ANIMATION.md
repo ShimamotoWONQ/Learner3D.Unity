@@ -8,28 +8,48 @@
 AnimationManager          ← StepManager と UI の橋渡し
   └─ AnimationSequence    ← step 内の node 列を管理
        └─ AnimationStep   ← 並列再生する node のグループ
-            └─ AnimationStepNode  ← Animator を持つ 1 オブジェクト
+            └─ AnimationNodeBase  ← ノードの共通基底
+                 ├─ AnimationStepNode    ← Animator を持つ 1 オブジェクト
+                 └─ CustomAnimationNode  ← カスタムスクリプト用ノード
+                      └─ CustomAnimationScript ← ユーザー派生用基底
 ```
 
 ---
 
 ## Classes
 
-### AnimationStepNode
-`Scripts/Animation/AnimationStepNode.cs`
+### AnimationNodeBase
+`Scripts/Animation/AnimationNodeBase.cs`
 
-- `Animator` を持つ GameObject に付ける。`RequireComponent(typeof(Animator))`。
-- `Awake()` で `_animator.speed = 0` にして自動再生を止める。
-- `Play()` で `Rebind()` してから `speed = 1` で再生開始。
-- **完了検出は `Update()` のポーリング方式。** Animation Event は使わない。
-  - `normalizedTime` が前フレームから `> 0.9 → < 0.1` に急落したらループ境界と判断し `OnCompleted` を発火。
-  - Animator Controller 側に Exit Time トリガーの遷移があると `normalizedTime` が `1.0` に達せずスキップされるため、`>= 1f` チェックではなくこの差分検出を採用している。
-- Animation Clip の **Loop Time は ON のままでよい**（スクリプト側で 1 周で止める）。
+- すべてのアニメーションノードの抽象基底クラス（MonoBehaviour）。
+- `AnimationStepNode` と `CustomAnimationNode` が派生する。
 
 **公開イベント:**
 | イベント | タイミング |
 |---------|----------|
-| `OnCompleted` | アニメーション 1 周完了時 |
+| `OnCompleted` | ノード完了時（派生クラスが `NotifyCompleted()` を呼ぶ） |
+
+**公開メソッド（abstract）:**
+| メソッド | 動作 |
+|---------|------|
+| `Play()` | 再生開始 |
+| `ResetAndPlay()` | リセットして再生（Back 用） |
+| `Pause()` | 一時停止 |
+| `Resume()` | 再開 |
+| `Stop()` | 停止 |
+
+---
+
+### AnimationStepNode
+`Scripts/Animation/AnimationStepNode.cs`
+
+- `AnimationNodeBase` 派生。`Animator` を持つ GameObject に付ける。`RequireComponent(typeof(Animator))`。
+- `Awake()` で `_animator.speed = 0` にして自動再生を止める。
+- `Play()` で `Rebind()` してから `speed = 1` で再生開始。
+- **完了検出は `Update()` のポーリング方式。** Animation Event は使わない。
+  - `normalizedTime` が前フレームから `> 0.9 → < 0.1` に急落したらループ境界と判断し `NotifyCompleted()` を呼ぶ。
+  - Animator Controller 側に Exit Time トリガーの遷移があると `normalizedTime` が `1.0` に達せずスキップされるため、`>= 1f` チェックではなくこの差分検出を採用している。
+- Animation Clip の **Loop Time は ON のままでよい**（スクリプト側で 1 周で止める）。
 
 **公開メソッド:**
 | メソッド | 動作 |
@@ -42,11 +62,50 @@ AnimationManager          ← StepManager と UI の橋渡し
 
 ---
 
+### CustomAnimationNode
+`Scripts/Animation/CustomAnimationNode.cs`
+
+- `AnimationNodeBase` 派生。`CustomAnimationScript` を AnimationStep に接続するフレームワーク層。
+- Inspector で `CustomAnimationScript` をアサインする。
+- `Play()` / `Stop()` / `Pause()` / `Resume()` を script に委譲する。
+- script の `OnScriptCompleted` イベントを購読し、完了時に `NotifyCompleted()` を呼ぶ。
+
+**Inspector フィールド:**
+| フィールド | 説明 |
+|-----------|------|
+| `script` | 対象の `CustomAnimationScript` |
+
+---
+
+### CustomAnimationScript
+`Scripts/Animation/CustomAnimationScript.cs`
+
+- ユーザーが派生する抽象基底クラス（MonoBehaviour）。
+- `OnPlay()` / `OnStop()` を override して任意のロジックを実装する。
+- `OnPause()` / `OnResume()` は virtual（必要に応じて override）。
+- 完了条件がある場合は `Complete()` を呼ぶ。無限に走るスクリプトは呼ばなくてよい（`Next()` で `Stop` される）。
+
+**公開メソッド（派生クラスが override）:**
+| メソッド | 動作 |
+|---------|------|
+| `OnPlay()` | **abstract** — 再生開始時のロジック |
+| `OnStop()` | **abstract** — 停止時のロジック |
+| `OnPause()` | **virtual** — 一時停止時のロジック |
+| `OnResume()` | **virtual** — 再開時のロジック |
+
+**protected メソッド:**
+| メソッド | 動作 |
+|---------|------|
+| `Complete()` | 完了を通知（`OnScriptCompleted` イベント発火） |
+
+---
+
 ### AnimationStep
 `Scripts/Animation/AnimationStep.cs`
 
 - `[Serializable]` クラス（MonoBehaviour ではない）。`AnimationSequence` の `[SerializeField]` リストに入る。
-- 複数の `AnimationStepNode` を **並列再生** する。全 node が `OnCompleted` を返したら `OnStepCompleted` を発火。
+- 複数の `AnimationNodeBase` を **並列再生** する。全 node が `OnCompleted` を返したら `OnStepCompleted` を発火。
+- `AnimationStepNode` と `CustomAnimationNode` を混在させられる。
 
 **公開イベント:**
 | イベント | タイミング |
@@ -151,8 +210,17 @@ UI / InputManager
 2. `AnimationManager.objectManager` に `ObjectManager` をアサイン。
 3. `StepManager.animationManager` に上記をアサイン。
 4. アニメーションあり step の holder 配下に `AnimationSequence` を持つ GameObject を置く。
-5. `AnimationSequence.steps` に `AnimationStep` を列挙し、各 step の `nodes` に `AnimationStepNode` をアサイン。
+5. `AnimationSequence.steps` に `AnimationStep` を列挙し、各 step の `nodes` に `AnimationNodeBase` 派生をアサイン。
+   - Animator アニメーション → `AnimationStepNode` を付けた GameObject
+   - カスタムスクリプト → `CustomAnimationNode` + `CustomAnimationScript` 派生を付けた GameObject
 6. 非アニメーション step は `AnimationSequence` を持たなければ自動的に素通りになる。
+
+### カスタムスクリプトの追加手順
+
+1. `CustomAnimationScript` を継承したスクリプトを作成（`OnPlay()` / `OnStop()` を実装）。
+2. 対象 GameObject にそのスクリプトと `CustomAnimationNode` を付ける。
+3. `CustomAnimationNode.script` にスクリプトをアサイン。
+4. `AnimationStep.nodes` に `CustomAnimationNode` を追加。
 
 ### Animator Controller の注意事項
 
